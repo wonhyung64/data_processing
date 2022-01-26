@@ -91,12 +91,13 @@ def read_labels(label_dir):
 
 #%%
 def fetch_dataset(dataset, split, img_size, data_dir=r"C:\won", save_dir=r"D:\won"):
-    data_dir = data_dir + r"\data\tfds"
-    if os.path.exists(data_dir) == False: os.mkdir(data_dir)
 
     save_dir = save_dir + r"\data\\" + dataset + "_tfrecord_" + str(img_size[0]) + "_" + str(img_size[1])
     if os.path.exists(save_dir) == False:
         os.mkdir(save_dir)
+
+        data_dir = data_dir + r"\data\tfds"
+        if os.path.exists(data_dir) == False: os.mkdir(data_dir)
 
         train, validation, test, labels = download_dataset(dataset, data_dir)
 
@@ -120,7 +121,3 @@ def fetch_dataset(dataset, split, img_size, data_dir=r"C:\won", save_dir=r"D:\wo
     labels = read_labels(save_dir)
     return datasets, labels
 
-# %%
-dataset, labels = fetch_dataset("voc07", "test", (416,416))
-dataset, labels = fetch_dataset("voc12", "test", (416,416))
-# %%
