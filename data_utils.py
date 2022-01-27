@@ -109,7 +109,14 @@ def fetch_dataset(dataset, split, img_size, data_dir=r"C:\won", save_dir=r"D:\wo
             try_num = 0
             writer = tf.io.TFRecordWriter(f"{save_dir}/{name}.tfrecord".encode("utf-8"))
             for sample in split_dataset:
-                example = {"image":sample["image"]/255, "bbox":sample["objects"]["bbox"], "label":sample["objects"]["label"]}
+                image = sample["image"]/255
+                bbox = sample["objects"]["bbox"]
+                label = sample["objects"]["label"]
+                if split == "test":
+                    not_diff = tf.logical_not(sample["objects"]["is_difficult"])
+                    bbox = bbox[not_diff]
+                    label = label[not_diff]
+                example = {"image":image, "bbox":bbox, "label":label}
                 x = serialize_example(example, img_size)
                 writer.write(x)
                 try_num += 1

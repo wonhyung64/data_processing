@@ -18,7 +18,13 @@ start_time = time.time()
 writer = tf.io.TFRecordWriter(f"{save_dir}/{name}.tfrecord".encode("utf-8"))
 while try_num < 100:
     sample = next(data_iter)
-    example = {"image":sample["image"]/255, "bbox":sample["objects"]["bbox"], "label":sample["objects"]["label"]}
+    image = sample["image"]/255
+    bbox = sample["objects"]["bbox"]
+    label = sample["objects"]["label"]
+    not_diff = tf.logical_not(sample["objects"]["is_difficult"])
+    bbox = bbox[not_diff]
+    label = label[not_diff]
+    example = {"image":image, "bbox":bbox, "label":label}
     x = data.serialize_example(example)
     writer.write(x)
     try_num += 1
