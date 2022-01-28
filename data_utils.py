@@ -113,7 +113,7 @@ def fetch_dataset(dataset, split, img_size, data_dir=r"C:\won", save_dir=r"D:\wo
                 bbox = sample["objects"]["bbox"]
                 label = sample["objects"]["label"]
                 if split == "test":
-                    not_diff = tf.logical_not(sample["objects"]["is_difficult"])
+                    not_diff = tf.logical_not(sample["objects"]["is_crowd" if dataset=="coco17" else "is_difficult"])
                     bbox = bbox[not_diff]
                     label = label[not_diff]
                 example = {"image":image, "bbox":bbox, "label":label}

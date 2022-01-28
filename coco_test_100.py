@@ -1,17 +1,17 @@
 #%%
 import time
-import data
+import data_utils
 import tensorflow as tf
 
 #%%
-data_dir = r"C:\won\data\tfds"
-train, validation, test = data.download_dataset("coco17", data_dir)
+data_dir = r"C:/won/data/tfds"
+train, validation, test, labels = data_utils.download_dataset("coco17", data_dir)
 data_iter = iter(train)
 
 #%%
-save_dir = r"D:\won"
+save_dir = r"D:/won"
 name = "test"
-save_dir = save_dir + r"\data\\" + "coco17" + "_tfrecord_" + str(416) + "_" + str(416)
+save_dir = save_dir + r"/data/" + "coco07" + "_tfrecord_" + str(416) + "_" + str(416)
 
 try_num = 0
 start_time = time.time()
@@ -21,11 +21,11 @@ while try_num < 100:
     image = sample["image"]/255
     bbox = sample["objects"]["bbox"]
     label = sample["objects"]["label"]
-    not_diff = tf.logical_not(sample["objects"]["is_difficult"])
+    not_diff = tf.logical_not(sample["objects"]["is_crowd"])
     bbox = bbox[not_diff]
     label = label[not_diff]
     example = {"image":image, "bbox":bbox, "label":label}
-    x = data.serialize_example(example)
+    x = data_utils.serialize_example(example, (416,416))
     writer.write(x)
     try_num += 1
     print(try_num)
