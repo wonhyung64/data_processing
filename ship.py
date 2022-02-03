@@ -171,4 +171,3 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
     return dataset, labels
 
 # %%
-dataset, labels = fetch_dataset("ship", "test", (416, 416))
