@@ -98,7 +98,7 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
                         print(try_num)
                         file_dir5 = file_dir4 + "/" + filename_lst[k]
                         filename = re.sub(r'[^0-9]', '', filename_lst[k])
-                        filename_lst.append(filename)
+                        filename_ = list(filename)
 
                         #jpg
                         img_ = Image.open(file_dir5 + ".jpg")
@@ -118,7 +118,7 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
                                     # print("--", y.tag)
                                     if y.tag == "bndbox":
                                         bbox_ = [int(z.text) for z in y] 
-                                        bbox = [bbox_[0] / 2160, bbox_[1] / 3840, bbox_[2] / 2160, bbox_[3] / 3840]
+                                        bbox = [bbox_[1] / 2160, bbox_[0] / 3840, bbox_[3] / 2160, bbox_[2] / 3840]
                                         # print("----", bbox)
                                         bboxes_.append(bbox)
                                     if y.tag == "category_id":
@@ -145,7 +145,7 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
                             "bbox":bboxes,
                             "bbox_shape":bboxes.shape,
                             "label":labels,
-                            "filename":np.array(filename)
+                            "filename":np.array(filename_)
                         }
 
                         info_ = {
@@ -171,3 +171,5 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
     return dataset, labels
 
 # %%
+# fetch_dataset("ship", "train", (500, 500))
+fetch_dataset("ship", "train", (416, 416))
