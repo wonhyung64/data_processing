@@ -64,7 +64,8 @@ def read_labels(label_dir):
     return labels
 
 #%%
-def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:/won/data"):
+def fetch_dataset(dataset, split, img_size, file_dir="D:/won/data", save_dir="D:/won/data"):
+    file_dir = "D:/won/data"
     save_dir = f"{save_dir}/{dataset}_tfrecord_{img_size[0]}_{img_size[1]}"
 
     if os.path.isdir(save_dir) == False:
@@ -129,6 +130,8 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
                                         label_dict[str(label)] = y.text
                         bboxes = np.array(bboxes_, dtype=np.float32)
                         labels = np.array(labels_, dtype=np.int32)
+                        bboxes = bboxes[labels == 2]
+                        labels = labels[labels == 2] - 2
 
                         #json
                         with open(file_dir5 + "_meta.json", "r", encoding="UTF8") as st_json:
@@ -171,5 +174,5 @@ def fetch_dataset(dataset, split, img_size, file_dir="C:/won/data", save_dir="D:
     return dataset, labels
 
 # %%
-# fetch_dataset("ship", "train", (500, 500))
-fetch_dataset("ship", "train", (416, 416))
+fetch_dataset("ship", "train", (500, 500))
+# fetch_dataset("ship", "train", (416, 416))
